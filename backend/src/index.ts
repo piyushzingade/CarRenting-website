@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.route";
 import carRoutes from "./routes/car.route";
 import packageRoutes from "./routes/packages.route";
 import contactRoutes from "./routes/contact.route";
+import connectDB from "./db/db";
 
 
 dotenv.config();
@@ -22,6 +23,9 @@ app.use("/cars", carRoutes);
 app.use("/packages", packageRoutes);
 app.use("/contact", contactRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  connectDB();
+  console.log("App is up and running");
+});

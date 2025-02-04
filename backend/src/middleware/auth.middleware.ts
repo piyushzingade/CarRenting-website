@@ -6,13 +6,13 @@ export default function authMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const token = req.header("token");
   if (!token) {
      res.status(401).json({ error: "Unauthorized" });
      return;
 }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     req.user = decoded as any; // Add `user` to request object
     next();
   } catch {
