@@ -8,4 +8,5 @@ const user_controller_1 = require("../controllers/user.controller");
 const auth_middleware_1 = __importDefault(require("../middleware/auth.middleware"));
 const userRoutes = express_1.default.Router();
 userRoutes.get("/profile", auth_middleware_1.default, user_controller_1.getUserProfile);
+userRoutes.get("/buy", auth_middleware_1.default, user_controller_1.getPurchase);
 exports.default = userRoutes;

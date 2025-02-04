@@ -13,3 +13,8 @@ export const getUserProfile = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Error fetching user profile" });
   }
 };
+
+
+export const getPurchase = async(req: Request , res : Response) =>{
+
+}
