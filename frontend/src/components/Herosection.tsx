@@ -1,4 +1,4 @@
-import React from "react";
+
 import { FaShieldAlt, FaHeadset, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function Herosection() {
