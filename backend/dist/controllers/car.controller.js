@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCarDetails = exports.getAllCars = void 0;
+exports.bookCar = exports.getCarDetails = exports.getAllCars = void 0;
 const cars_1 = require("../data/cars"); // Ensure TypeScript allows JSON import
 // Fetch all cars
 const getAllCars = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -38,3 +38,27 @@ const getCarDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getCarDetails = getCarDetails;
+const bookCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { carId } = req.body;
+    try {
+        const carsDetails = cars_1.carsData.find((p) => p.id === carId);
+        if (!carsDetails) {
+            res.status(404).json({ error: "Car not found" });
+            return;
+        }
+        let finalPrice = carsDetails.price;
+        // Apply discount if the coupon code matches
+        // if ( && couponCode === packageDetails.couponCode) {
+        //   finalPrice *= 0.9; // Apply 10% discount
+        // }
+        res.status(200).json({
+            message: "Package booked successfully",
+            carsDetails,
+            finalPrice,
+        });
+    }
+    catch (error) {
+        res.status(500).json({ error: "Error booking package" });
+    }
+});
+exports.bookCar = bookCar;

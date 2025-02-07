@@ -39,3 +39,33 @@ export const getCarDetails = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Error fetching car details" });
   }
 };
+
+export const bookCar = async (req: Request, res: Response) => {
+  const { carId } = req.body;
+
+  try {
+    const carsDetails= carsData.find(
+      (p) => p.id === carId
+    );
+
+    if (!carsDetails) {
+      res.status(404).json({ error: "Car not found" });
+      return;
+    }
+
+    let finalPrice = carsDetails.price;
+
+    // Apply discount if the coupon code matches
+    // if ( && couponCode === packageDetails.couponCode) {
+    //   finalPrice *= 0.9; // Apply 10% discount
+    // }
+
+    res.status(200).json({
+      message: "Package booked successfully",
+      carsDetails,
+      finalPrice,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error booking package" });
+  }
+};

@@ -20,9 +20,22 @@ export const Appbar = () => {
         <h1 className="text-blue-500 font-bold text-2xl">CarRent</h1>
       </div>
       <div className="flex justify-between items-center gap-4">
-        <div className="hover:cursor-pointer hover:underline">Home </div>
-        <div className="hover:cursor-pointer hover:underline">Cars</div>
-        <div className="hover:cursor-pointer hover:underline">
+        <div
+          onClick={() => navigate("/")}
+          className="hover:cursor-pointer hover:underline"
+        >
+          Home{" "}
+        </div>
+        <div
+          onClick={() => navigate("/cars")}
+          className="hover:cursor-pointer hover:underline"
+        >
+          Cars
+        </div>
+        <div
+          onClick={() => navigate("/packages")}
+           className="hover:cursor-pointer hover:underline"
+        >
           Tour Packages
         </div>
         <div className="hover:cursor-pointer hover:underline">Offer</div>

@@ -1,9 +1,7 @@
-import { Appbar } from '../components/Appbar'
 import Book from '../components/Book';
 import Contact from '../components/Contacts';
 import Faq from '../components/Faq';
 import FeaturedCars from '../components/FeaturedCars';
-import Footer from '../components/Footer';
 import Herosection from '../components/Herosection';
 import PricingPlans from '../components/PricingPlans';
 import SpecialOffers from '../components/SpecialOffer';
@@ -13,7 +11,6 @@ import TourPackages from '../components/TourPackages';
 export default function Home() {
   return (
     <div>
-      <Appbar />
       <Herosection />
       <FeaturedCars/>
       <TourPackages/>
@@ -23,7 +20,6 @@ export default function Home() {
       <Testimonial/>
       <Faq/>
       <Contact/>
-      <Footer/>
     </div>
   );
 }
