@@ -20,7 +20,8 @@ export default function CarsPages() {
   const [loading, setLoading] = useState<boolean>(true); // State for loading status
   const [error, setError] = useState<string | null>(null); // State for error handling
   const navigate = useNavigate(); // Navigation hook
-
+  
+  
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -45,13 +46,13 @@ export default function CarsPages() {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
+    <div className="bg-gray-100 min-h-screen min-w-screen p-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Available Cars</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {cars.map((car) => (
           <div
             key={car.id}
-            className="bg-white shadow-lg p-4 rounded-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            className="bg-white shadow-lg p-4 rounded-lg hover:shadow-xl transition-shadow duration-300 hover:cursor-pointer"
             onClick={() => navigate(`/car/${car.id}`)} // Navigate to detail page on card click
           >
             <img
@@ -71,19 +72,23 @@ export default function CarsPages() {
             >
               {car.availability ? "Available" : "Unavailable"}
             </p>
-            <button
-              className="bg-blue-600 text-white px-4 py-2 mt-4 rounded-lg w-full hover:bg-blue-700 transition"
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent navigation when clicking "Book Now"
-                alert(`Booking ${car.name} is in progress.`);
-              }}
-            >
-              Book Now
-            </button>
+            {car.availability ? (
+              <button
+                className="bg-blue-600 hover:cursor-pointer text-white px-4 py-2 mt-4 rounded-lg w-full hover:bg-blue-700 transition"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent navigation when clicking "Book Now"
+                }}
+              >
+                Book Now
+              </button>
+            ) : (
+              <button className="bg-gray-600 text-white px-4 py-2 mt-4 rounded-lg w-full hover:cursor-not-allowed">
+                Not Available
+              </button>
+            )}
           </div>
         ))}
       </div>
-      
     </div>
   );
 }
