@@ -2,7 +2,6 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import User from "./pages/User";
 import Home from "./pages/Home";
 import CarsPages from "./pages/Cars.pages";
-// import DetailPage from "./pages/CarDetailsPage";
 import Layout from "./components/Layout";
 import PackagesPage from "./pages/Packages.page";
 import CarDetailPage from "./pages/CarDetailsPage";

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
-
 
 // Define the Car interface based on your backend schema
 interface Car {
@@ -12,16 +12,15 @@ interface Car {
   price: number;
   description: string;
   availability: boolean;
-  image: string; // Assuming carsData has an image property
+  image: string;
 }
 
 export default function CarsPages() {
-  const [cars, setCars] = useState<Car[]>([]); // State to store car data
-  const [loading, setLoading] = useState<boolean>(true); // State for loading status
-  const [error, setError] = useState<string | null>(null); // State for error handling
-  const navigate = useNavigate(); // Navigation hook
-  
-  
+  const [cars, setCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchCars = async () => {
       try {
@@ -38,57 +37,77 @@ export default function CarsPages() {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <p className="text-center text-xl font-semibold mt-10">Loading...</p>
+    );
   }
 
   if (error) {
-    return <p className="text-red-500">{error}</p>;
+    return <p className="text-center text-red-500 text-xl mt-10">{error}</p>;
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen min-w-screen p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Available Cars</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="min-h-screen w-full bg-gray-100  p-6">
+      <h1 className="text-4xl font-bold text-gray-900 text-center mb-8">
+        Available Cars 🚗
+      </h1>
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         {cars.map((car) => (
-          <div
+          <motion.div
             key={car.id}
-            className="bg-white shadow-lg p-4 rounded-lg hover:shadow-xl transition-shadow duration-300 hover:cursor-pointer"
-            onClick={() => navigate(`/car/${car.id}`)} // Navigate to detail page on card click
+            className="bg-white shadow-xl p-4 rounded-xl cursor-pointer transform transition duration-300 hover:scale-100"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate(`/car/${car.id}`)}
           >
-            <img
+            <motion.img
               src={car.image}
               alt={car.name}
-              className="w-full h-48 object-cover rounded-lg mb-4"
+              className="w-full h-48 object-cover rounded-xl mb-4 shadow-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7 }}
             />
-            <h2 className="text-xl font-bold text-gray-800">{car.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{car.name}</h2>
             <p className="text-gray-600 capitalize">Type: {car.type}</p>
-            <p className="text-gray-600">
-              Price: ₹{car.price.toLocaleString()}
+            <p className="text-lg text-gray-700 font-semibold">
+              Price:{" "}
+              <span className="text-green-600">
+                ₹{car.price.toLocaleString()}
+              </span>
             </p>
-            <p
-              className={`mt-2 text-sm font-medium ${
+            <motion.p
+              className={`mt-2 text-lg font-medium ${
                 car.availability ? "text-green-600" : "text-red-600"
               }`}
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
               {car.availability ? "Available" : "Unavailable"}
-            </p>
+            </motion.p>
             {car.availability ? (
-              <button
-                className="bg-blue-600 hover:cursor-pointer text-white px-4 py-2 mt-4 rounded-lg w-full hover:bg-blue-700 transition"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent navigation when clicking "Book Now"
-                }}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 mt-4 rounded-lg w-full font-semibold shadow-md hover:from-blue-600 hover:to-purple-600 transition-all"
+                onClick={(e) => e.stopPropagation()}
               >
                 Book Now
-              </button>
+              </motion.button>
             ) : (
-              <button className="bg-gray-600 text-white px-4 py-2 mt-4 rounded-lg w-full hover:cursor-not-allowed">
+              <button className="bg-gray-600 text-white px-4 py-2 mt-4 rounded-lg w-full cursor-not-allowed">
                 Not Available
               </button>
             )}
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

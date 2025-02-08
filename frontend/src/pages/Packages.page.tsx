@@ -1,10 +1,10 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { BACKEND_URL } from "../lib/config"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../lib/config";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-
-
+// Define the Package interface
 interface Package {
   id: string;
   name: string;
@@ -12,85 +12,118 @@ interface Package {
   description: string;
   img: string;
   couponCode?: string;
-  availability : boolean
+  availability: boolean;
 }
+
 export default function PackagesPage() {
-    const [packages ,  setPackages] = useState<Package[]>([]);
-    const [loading , setLoading] = useState<boolean>(true)
-    const [error , setError] = useState<string | null>(null);
-    const navigate = useNavigate()
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-    useEffect(()=>{
-        const fetch = async() => {
-            try {
-                const response = await axios.get<Package[]>(`${BACKEND_URL}/packages`);
-                const data = response.data;
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const response = await axios.get<Package[]>(`${BACKEND_URL}/packages`);
+        setPackages(response.data);
+      } catch (err: any) {
+        console.log(err);
+        setError("Failed to fetch packages. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                setPackages(data);
-            } catch (error :any) {
-                console.log(error);
-                setError(error)
-            }finally{
-                setLoading(false);
-        }   
-        }
+    fetchPackages();
+  }, []);
 
-        fetch()
-    } , [])
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-xl font-semibold text-gray-700">Loading...</p>
+      </div>
+    );
+  }
 
-    if(loading){
-        return <div className="">
-            Loading....
-        </div>
-    }
-
-    if(error){
-        return <div className="text-red-500 flex items-center justify-center p-20">Failed to fetch</div>
-    }
-
+  if (error) {
+    return (
+      <div className="text-red-500 flex items-center justify-center p-20 text-xl">
+        {error}
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-gray-100 min-h-screen min-w-screen p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Available Cars</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="bg-gray-100 min-h-screen p-8">
+      <h1 className="text-4xl font-bold text-gray-900 text-center mb-8">
+        Our Packages 📦
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {packages.map((pack) => (
-          <div
+          <motion.div
             key={pack.id}
-            className="bg-white shadow-lg p-4 rounded-lg hover:shadow-xl transition-shadow duration-300 hover:cursor-pointer"
-            onClick={() => navigate(`/packages/${pack.id}`)} // Navigate to detail page on card click
+            className="bg-white shadow-lg p-5 rounded-xl hover:shadow-2xl transition-shadow duration-300 hover:cursor-pointer"
+            onClick={() => navigate(`/packages/${pack.id}`)}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
           >
-            <img
+            <motion.img
               src={pack.img}
               alt={pack.name}
-              className="w-full h-48 object-cover rounded-lg mb-4"
+              className="w-full h-56 object-cover rounded-lg mb-4 shadow-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
             />
-            <h2 className="text-xl font-bold text-gray-800">{pack.name}</h2>
-            <p className="text-gray-600 text-lg">Type: {pack.description}</p>
-            <p className="text-gray-600">
-              Price: ₹{pack.price.toLocaleString()}
+            <h2 className="text-2xl font-bold text-gray-800">{pack.name}</h2>
+            <p className="text-gray-600 mt-2">{pack.description}</p>
+            <p className="text-lg text-gray-800 font-semibold mt-2">
+              Price:{" "}
+              <span className="text-green-600">
+                ₹{pack.price.toLocaleString()}
+              </span>
             </p>
-            <p
-              className={`mt-2 text-sm font-medium ${
+
+            {pack.couponCode && (
+              <motion.div
+                className="mt-2 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-md font-semibold w-fit"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                Coupon Code:{" "}
+                <span className="font-bold">{pack.couponCode}</span>
+              </motion.div>
+            )}
+
+            <motion.p
+              className={`mt-4 text-lg font-medium ${
                 pack.availability ? "text-green-600" : "text-red-600"
               }`}
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              {pack.availability ? "Available" : "Unavailable"}
-            </p>
+              {pack.availability ? "Available ✅" : "Unavailable ❌"}
+            </motion.p>
+
             {pack.availability ? (
-              <button
-                className="bg-blue-600 hover:cursor-pointer text-white px-4 py-2 mt-4 rounded-lg w-full hover:bg-blue-700 transition"
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 mt-4 rounded-lg w-full font-semibold tracking-wide shadow-md hover:from-blue-600 hover:to-purple-600 transition-all"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent navigation when clicking "Book Now"
                 }}
               >
-                Book Now
-              </button>
+                Book Now 🚀
+              </motion.button>
             ) : (
-              <button className="bg-gray-600 text-white px-4 py-2 mt-4 rounded-lg w-full hover:cursor-not-allowed">
+              <button className="bg-gray-600 text-white px-6 py-2 mt-4 rounded-lg w-full font-semibold cursor-not-allowed">
                 Not Available
               </button>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
