@@ -4,16 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 
-// Define the Car interface
-interface Car {
-  id: string;
-  name: string;
-  type: "economy" | "premium" | "luxury";
-  price: number;
-  description: string;
-  availability: boolean;
-  image: string;
-}
+
 
 export default function CarDetailPage() {
   const { id } = useParams<{ id: string }>(); // Get car ID from the URL

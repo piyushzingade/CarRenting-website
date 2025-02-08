@@ -4,16 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 
-// Define the Car interface based on your backend schema
-interface Car {
-  id: string;
-  name: string;
-  type: "economy" | "premium" | "luxury";
-  price: number;
-  description: string;
-  availability: boolean;
-  image: string;
-}
+
 
 export default function CarsPages() {
   const [cars, setCars] = useState<Car[]>([]);

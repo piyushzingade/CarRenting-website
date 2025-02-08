@@ -5,15 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 // Define the Package interface
-interface Package {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  img: string;
-  couponCode?: string;
-  availability: boolean;
-}
+
 
 export default function PackagesPage() {
   const [packages, setPackages] = useState<Package[]>([]);

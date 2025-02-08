@@ -5,15 +5,7 @@ import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 
 // Define the Package interface
-interface Package {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  img: string;
-  couponCode?: string;
-  availability: boolean;
-}
+
 
 export default function PackageDetailPage() {
   const { id } = useParams<{ id: string }>(); // Get package ID from the URL
