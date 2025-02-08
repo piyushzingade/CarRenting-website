@@ -1,5 +1,5 @@
 // Layout.tsx
-import { Appbar } from "./Appbar";
+import Appbar  from "./Appbar";
 import Footer from "./Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
