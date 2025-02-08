@@ -21,7 +21,7 @@ export const carsData = [
     "type": "economy",
     "price": 21000,
     "description": "Affordable and packed with features.",
-    "availability": false
+    "availability": true
   },
   {
     "id": "4",
@@ -45,7 +45,7 @@ export const carsData = [
     "type": "premium",
     "price": 48000,
     "description": "Elegant design and superior comfort.",
-    "availability": false
+    "availability": true
   },
   {
     "id": "7",
@@ -69,7 +69,7 @@ export const carsData = [
     "type": "luxury",
     "price": 250000,
     "description": "An exotic supercar with breathtaking performance.",
-    "availability": false
+    "availability": true
   },
   {
     "id": "10",
@@ -101,7 +101,7 @@ export const carsData = [
     "type": "luxury",
     "price": 160000,
     "description": "A luxurious and powerful SUV.",
-    "availability": false
+    "availability": true
   },
   {
     "id": "14",

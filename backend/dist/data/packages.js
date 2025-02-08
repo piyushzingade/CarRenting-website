@@ -8,6 +8,7 @@ exports.packages = [
         price: 25000,
         destinations: ["Delhi", "Agra", "Jaipur"],
         couponCode: "GOLDEN20",
+        availability: true,
     },
     {
         id: "2",
@@ -15,6 +16,7 @@ exports.packages = [
         price: 30000,
         destinations: ["Goa"],
         couponCode: "GOABLAST",
+        availability: true,
     },
     {
         id: "3",
@@ -22,6 +24,7 @@ exports.packages = [
         price: 35000,
         destinations: ["Kochi", "Alleppey", "Munnar"],
         couponCode: "KERALA10",
+        availability: true,
     },
     {
         id: "4",
@@ -29,6 +32,7 @@ exports.packages = [
         price: 40000,
         destinations: ["Manali", "Leh", "Ladakh"],
         couponCode: "HIMALAYA15",
+        availability: true,
     },
     {
         id: "5",
@@ -36,6 +40,7 @@ exports.packages = [
         price: 45000,
         destinations: ["Jaipur", "Jodhpur", "Udaipur"],
         couponCode: "ROYAL50",
+        availability: true,
     },
     {
         id: "6",
@@ -43,6 +48,7 @@ exports.packages = [
         price: 50000,
         destinations: ["Guwahati", "Shillong", "Kaziranga"],
         couponCode: "NE20",
+        availability: true,
     },
     {
         id: "7",
@@ -50,6 +56,7 @@ exports.packages = [
         price: 22000,
         destinations: ["Chennai", "Madurai", "Rameswaram"],
         couponCode: "TAMIL10",
+        availability: true,
     },
     {
         id: "8",
@@ -57,6 +64,7 @@ exports.packages = [
         price: 60000,
         destinations: ["Port Blair", "Havelock Island", "Neil Island"],
         couponCode: "ANDAMAN25",
+        availability: true,
     },
     {
         id: "9",
@@ -64,6 +72,7 @@ exports.packages = [
         price: 38000,
         destinations: ["Gangtok", "Pelling", "Darjeeling"],
         couponCode: "SIKKIM5",
+        availability: true,
     },
     {
         id: "10",
@@ -71,6 +80,7 @@ exports.packages = [
         price: 18000,
         destinations: ["Varanasi", "Sarnath"],
         couponCode: "SPIRITUAL10",
+        availability: true,
     },
     {
         id: "11",
@@ -78,6 +88,7 @@ exports.packages = [
         price: 27000,
         destinations: ["Mumbai", "Ajanta", "Ellora"],
         couponCode: "MH20",
+        availability: true,
     },
     {
         id: "12",
@@ -85,6 +96,7 @@ exports.packages = [
         price: 32000,
         destinations: ["Rishikesh", "Mussoorie", "Nainital"],
         couponCode: "UTTARAKHAND30",
+        availability: true,
     },
     {
         id: "13",
@@ -92,6 +104,7 @@ exports.packages = [
         price: 26000,
         destinations: ["Amritsar", "Ludhiana", "Patiala"],
         couponCode: "PUNJAB15",
+        availability: true,
     },
     {
         id: "14",
@@ -99,6 +112,7 @@ exports.packages = [
         price: 42000,
         destinations: ["Shillong", "Cherrapunji", "Mawsynram"],
         couponCode: "MEGHALAYA10",
+        availability: true,
     },
     {
         id: "15",
@@ -106,5 +120,6 @@ exports.packages = [
         price: 55000,
         destinations: ["Kanha", "Bandhavgarh", "Pench"],
         couponCode: "WILDLIFE25",
+        availability: true,
     },
 ];

@@ -20,22 +20,19 @@ export const getAllCars = async (_req: Request, res: Response) => {
   }
 };
 
-// Fetch a single car by ID
+// const validTypes = ["economy", "premium", "luxury"] as const;
 export const getCarDetails = async (req: Request, res: Response) => {
   try {
-    
-    const car: Car | undefined = carsData.find(
-      //@ts-ignore
-      (c: Car) => c.id === req.params.id
-    );
+    const car = carsData.find((c) => c.id === req.params.id);
 
-    if (!car) {
+    if (!car || !car.type.includes(car.type as any)) {
        res.status(404).json({ error: "Car not found" });
        return;
     }
 
     res.status(200).json(car);
   } catch (error) {
+    console.error("Error fetching car details:", error);
     res.status(500).json({ error: "Error fetching car details" });
   }
 };

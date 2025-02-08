@@ -21,19 +21,18 @@ const getAllCars = (_req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getAllCars = getAllCars;
-// Fetch a single car by ID
+// const validTypes = ["economy", "premium", "luxury"] as const;
 const getCarDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const car = cars_1.carsData.find(
-        //@ts-ignore
-        (c) => c.id === req.params.id);
-        if (!car) {
+        const car = cars_1.carsData.find((c) => c.id === req.params.id);
+        if (!car || !car.type.includes(car.type)) {
             res.status(404).json({ error: "Car not found" });
             return;
         }
         res.status(200).json(car);
     }
     catch (error) {
+        console.error("Error fetching car details:", error);
         res.status(500).json({ error: "Error fetching car details" });
     }
 });

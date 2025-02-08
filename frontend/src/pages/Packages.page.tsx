@@ -57,7 +57,7 @@ export default function PackagesPage() {
           <div
             key={pack.id}
             className="bg-white shadow-lg p-4 rounded-lg hover:shadow-xl transition-shadow duration-300 hover:cursor-pointer"
-            onClick={() => navigate(`/car/${pack.id}`)} // Navigate to detail page on card click
+            onClick={() => navigate(`/packages/${pack.id}`)} // Navigate to detail page on card click
           >
             <img
               src={pack.img}
