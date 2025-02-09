@@ -27,7 +27,7 @@ export default function Navbar() {
       </div>
 
       {/* Navigation Links */}
-      <div className="hidden sm:flex justify-between items-center gap-4">
+      <div className="hidden sm:flex justify-between items-center gap-4 lg:gap-8">
         <div
           onClick={() => navigate("/")}
           className="hover:cursor-pointer hover:underline"
