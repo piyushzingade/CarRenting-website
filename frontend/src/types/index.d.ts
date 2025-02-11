@@ -21,8 +21,8 @@ interface Car {
   description: string;
   availability: boolean;
   image: string;
-  category?: string; // Added missing property
-  seats?: string; // Added missing property
-  transmission?: string; // Added missing property
-  fuel?: string; // Added missing property
+  category?: string; 
+  seats?: string; 
+  transmission?: string; 
+  fuel?: string; 
 }

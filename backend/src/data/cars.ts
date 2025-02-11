@@ -5,7 +5,8 @@ export const carsData = [
     "type": "economy",
     "price": 20000,
     "description": "A reliable and fuel-efficient sedan.",
-    "availability": true
+    "availability": true,
+    
   },
   {
     "id": "2",
