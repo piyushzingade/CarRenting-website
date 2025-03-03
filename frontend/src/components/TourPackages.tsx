@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
+import { useNavigate } from "react-router-dom";
 
 const TourPackages = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -82,6 +84,9 @@ const TourPackages = () => {
         {/* View All Packages Button */}
         <div className="text-center mt-8">
           <motion.button
+            onClick={()=>{
+              navigate("/packages")
+            }}
             className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 inline-flex items-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

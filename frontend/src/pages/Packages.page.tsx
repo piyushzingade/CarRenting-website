@@ -101,10 +101,12 @@ export default function PackagesPage() {
 
             {pack.availability ? (
               <motion.button
+                
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 mt-4 rounded-lg w-full font-semibold tracking-wide shadow-md hover:from-blue-600 hover:to-purple-600 transition-all"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 mt-4 rounded-lg w-full font-semibold tracking-wide shadow-md hover:from-blue-600 hover:to-purple-600 transition-all hover:cursor-pointer "
                 onClick={(e) => {
+                  navigate("/book")
                   e.stopPropagation(); // Prevent navigation when clicking "Book Now"
                 }}
               >
