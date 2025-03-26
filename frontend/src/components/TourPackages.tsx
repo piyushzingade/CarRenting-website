@@ -4,6 +4,14 @@ import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 import { useNavigate } from "react-router-dom";
 
+interface Package {
+  _id: string;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+}
+
 const TourPackages = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -57,15 +65,16 @@ const TourPackages = () => {
                   className="bg-white rounded-2xl shadow-md p-4 min-w-[250px] md:min-w-[300px]"
                 >
                   <img
-                    src={pkg.img}
+                    src={pkg.image} // ✅ Corrected from pkg.img
                     alt={pkg.name}
-                    className="w-full h-40 object-cover rounded-md"
+                    className="w-full h-48 object-cover rounded-md" // ✅ Ensures image fits properly
+                    onError={(e) => (e.currentTarget.src = "/fallback.jpg")} // ✅ Fallback if image fails
                   />
                   <h3 className="text-lg font-bold mt-2">{pkg.name}</h3>
                   <p className="text-gray-600 text-sm">{pkg.description}</p>
                   <div className="flex justify-between items-center mt-4">
                     <span className="text-lg font-bold text-blue-600">
-                      {pkg.price}
+                      ₹{pkg.price}
                     </span>
                     <motion.button
                       className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 text-sm"
@@ -84,9 +93,7 @@ const TourPackages = () => {
         {/* View All Packages Button */}
         <div className="text-center mt-8">
           <motion.button
-            onClick={()=>{
-              navigate("/packages")
-            }}
+            onClick={() => navigate("/packages")}
             className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 inline-flex items-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

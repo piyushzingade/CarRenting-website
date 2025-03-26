@@ -1,21 +1,23 @@
 import { Request, Response } from "express";
-import { packages } from "../data/packages"; // Import JSON directly
-
-// Define the package type
-interface Package {
-  id: string;
-  name: string;
-  price: number;
-  destinations: string[];
-  couponCode?: string;
-}
+import { Package } from "../models/package.model"; // Import Mongoose model
 
 // Fetch all packages
 export const getAllPackages = async (_req: Request, res: Response) => {
   try {
-    res.status(200).json(packages);
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching packages" });
+    const packages = await Package.find(
+      {},
+      "name price img availability couponCode"
+    );
+
+    res.status(200).json(
+      packages.map((pack) => ({
+        ...pack.toObject(),
+        id: pack._id, // Map _id to id
+      }))
+    );
+  } catch (error  : any) {
+    console.error("Error fetching packages:", error);
+    res.status(500).json({ error: error.message || "Error fetching packages" });
   }
 };
 
@@ -24,13 +26,11 @@ export const bookPackage = async (req: Request, res: Response) => {
   const { packageId, couponCode } = req.body;
 
   try {
-    const packageDetails: Package | undefined = packages.find(
-      (p: Package) => p.id === packageId
-    );
+    const packageDetails = await Package.findById(packageId);
 
     if (!packageDetails) {
-      res.status(404).json({ error: "Package not found" });
-      return;
+       res.status(404).json({ error: "Package not found" });
+       return;
     }
 
     let finalPrice = packageDetails.price;
@@ -45,25 +45,27 @@ export const bookPackage = async (req: Request, res: Response) => {
       packageDetails,
       finalPrice,
     });
-  } catch (error) {
-    res.status(500).json({ error: "Error booking package" });
+  } catch (error  :any) {
+    console.error("Error booking package:", error);
+    res.status(500).json({ error: error.message || "Error booking package" });
   }
 };
 
 // Get details of a specific package
 export const getPackageDetails = async (req: Request, res: Response) => {
   try {
-    const foundPackage: Package | undefined = packages.find(
-      (p: Package) => p.id === req.params.id
-    );
+    const foundPackage = await Package.findById(req.params.id);
 
     if (!foundPackage) {
-      res.status(404).json({ error: "Package not found" });
-      return;
+       res.status(404).json({ error: "Package not found" });
+       return;
     }
 
     res.status(200).json(foundPackage);
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching package details" });
+  } catch (error : any) {
+    console.error("Error fetching package details:", error);
+    res
+      .status(500)
+      .json({ error: error.message || "Error fetching package details" });
   }
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { carsData} from "../data/cars"; // Ensure TypeScript allows JSON import
+import { Car } from "../models/car.model";
 
 // Define the car type based on schema
 interface Car {
@@ -9,60 +9,63 @@ interface Car {
   price: number;
   description: string;
   availability: boolean;
+  image:string
 }
 
 // Fetch all cars
 export const getAllCars = async (_req: Request, res: Response) => {
   try {
-    res.status(200).json(carsData);
+    const cars = await Car.find(); // Fetch all cars
+    res.status(200).json(cars);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching cars" });
+    res.status(500).json({ error: "Error fetching cars", details: error });
   }
 };
 
-// const validTypes = ["economy", "premium", "luxury"] as const;
+// ✅ Fetch a car by ID
 export const getCarDetails = async (req: Request, res: Response) => {
   try {
-    const car = carsData.find((c) => c.id === req.params.id);
+    const car = await Car.findById(req.params.id);
 
-    if (!car || !car.type.includes(car.type as any)) {
-       res.status(404).json({ error: "Car not found" });
-       return;
-    }
-
-    res.status(200).json(car);
-  } catch (error) {
-    console.error("Error fetching car details:", error);
-    res.status(500).json({ error: "Error fetching car details" });
-  }
-};
-
-export const bookCar = async (req: Request, res: Response) => {
-  const { carId } = req.body;
-
-  try {
-    const carsDetails= carsData.find(
-      (p) => p.id === carId
-    );
-
-    if (!carsDetails) {
+    if (!car) {
       res.status(404).json({ error: "Car not found" });
       return;
     }
 
-    let finalPrice = carsDetails.price;
+    res.status(200).json(car);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error fetching car details", details: error });
+  }
+};
 
-    // Apply discount if the coupon code matches
-    // if ( && couponCode === packageDetails.couponCode) {
-    //   finalPrice *= 0.9; // Apply 10% discount
-    // }
+// ✅ Book a car (update availability)
+export const bookCar = async (req: Request, res: Response) => {
+  const { carId } = req.body;
+
+  try {
+    const car = await Car.findById(carId);
+
+    if (!car) {
+      res.status(404).json({ error: "Car not found" });
+      return;
+    }
+
+    if (!car.availability) {
+      res.status(400).json({ error: "Car is already booked" });
+      return;
+    }
+
+    // Mark car as booked (unavailable)
+    car.availability = false;
+    await car.save();
 
     res.status(200).json({
-      message: "Package booked successfully",
-      carsDetails,
-      finalPrice,
+      message: "Car booked successfully",
+      car,
     });
   } catch (error) {
-    res.status(500).json({ error: "Error booking package" });
+    res.status(500).json({ error: "Error booking car", details: error });
   }
 };

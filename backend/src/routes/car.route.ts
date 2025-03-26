@@ -3,6 +3,7 @@ import { bookCar, getAllCars, getCarDetails } from "../controllers/car.controlle
 import authMiddleware from "../middleware/auth.middleware";
 
 
+
 const carRoutes = express.Router();
 
 // carRoutes.get("/", authMiddleware , getAllCars);
@@ -14,4 +15,5 @@ const carRoutes = express.Router();
 carRoutes.get("/",  getAllCars);
 carRoutes.get("/:id",  getCarDetails);
 carRoutes.get("/book", bookCar);
+
 export default carRoutes;

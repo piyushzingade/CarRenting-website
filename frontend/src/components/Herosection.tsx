@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { FaHeadset, FaShieldAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Herosection() {
   const navigate = useNavigate();
 
@@ -110,13 +111,12 @@ export default function Herosection() {
             {/* Central Car Image */}
             <div className="flex justify-center items-center">
               <img
-                src="https://d2m3nfprmhqjvd.cloudfront.net/blog/20231103174155/new-Tata-Safari.jpg"
+                src={"image.png"}
                 alt="Car"
                 className="w-auto h-full object-contain"
               />
             </div>
-
-            {/* Bottom Left Card - Safe & Secure */}
+            ;{/* Bottom Left Card - Safe & Secure */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -129,7 +129,6 @@ export default function Herosection() {
                 <p className="text-gray-600 text-sm">All cars sanitized</p>
               </div>
             </motion.div>
-
             {/* Top Right Card - 24/7 Support */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}

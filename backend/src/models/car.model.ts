@@ -18,6 +18,7 @@ const CarSchema: Schema = new Schema({
   price: { type: Number, required: true },
   description: { type: String },
   availability: { type: Boolean, default: true },
+  image: String,
 });
 
 export const Car = mongoose.model<ICar>("Car", CarSchema);

@@ -5,7 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 // Define the Package interface
-
+interface Package {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  img: string;
+  availability: boolean;
+  couponCode?: string;
+}
 
 export default function PackagesPage() {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -53,20 +61,25 @@ export default function PackagesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {packages.map((pack) => (
           <motion.div
-            key={pack.id}
+            key={pack.id} // Ensure each key is unique
             className="bg-white shadow-lg p-5 rounded-xl hover:shadow-2xl transition-shadow duration-300 hover:cursor-pointer"
             onClick={() => navigate(`/packages/${pack.id}`)}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
+            {/* Fix image rendering and make it fully fit */}
             <motion.img
               src={pack.img}
               alt={pack.name}
               className="w-full h-56 object-cover rounded-lg mb-4 shadow-md"
+              onError={(e) => {
+                e.currentTarget.src = "https://via.placeholder.com/300"; // Fallback image
+              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             />
+
             <h2 className="text-2xl font-bold text-gray-800">{pack.name}</h2>
             <p className="text-gray-600 mt-2">{pack.description}</p>
             <p className="text-lg text-gray-800 font-semibold mt-2">
@@ -101,12 +114,11 @@ export default function PackagesPage() {
 
             {pack.availability ? (
               <motion.button
-                
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 mt-4 rounded-lg w-full font-semibold tracking-wide shadow-md hover:from-blue-600 hover:to-purple-600 transition-all hover:cursor-pointer "
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 mt-4 rounded-lg w-full font-semibold tracking-wide shadow-md hover:from-blue-600 hover:to-purple-600 transition-all hover:cursor-pointer"
                 onClick={(e) => {
-                  navigate("/book")
+                  navigate("/book");
                   e.stopPropagation(); // Prevent navigation when clicking "Book Now"
                 }}
               >

@@ -4,10 +4,20 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../lib/config";
 
-
-
 // Define categories
 const categories = ["All Cars", "SUV", "Luxury", "Sedan", "Budget"];
+
+interface Car {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  availability: boolean;
+  image: string;
+  seats: number;
+  transmission: string;
+  fuel: string;
+}
 
 export default function FeaturedCars() {
   const [cars, setCars] = useState<Car[]>([]);
@@ -18,6 +28,7 @@ export default function FeaturedCars() {
     const fetchCars = async () => {
       try {
         const response = await axios.get<Car[]>(`${BACKEND_URL}/cars`);
+        console.log("Fetched Cars:", response.data); // Debugging log
         setCars(response.data);
       } catch (error) {
         console.error("Error fetching cars:", error);
@@ -65,53 +76,63 @@ export default function FeaturedCars() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {filteredCars.map((car, index) => (
-          <motion.div
-            key={car.id}
-            className="bg-white shadow-xl rounded-lg p-5 hover:shadow-2xl transition-all cursor-pointer"
-            whileHover={{ scale: 1.05, y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            onClick={() => navigate(`/car/${car.id}`)}
-          >
-            <img
-              src={car.image}
-              alt={car.name}
-              className="w-full h-48 object-cover rounded-md"
-            />
-            <div className="flex justify-between items-center mt-4">
-              <h3 className="text-xl font-bold text-gray-800">{car.name}</h3>
-              <span
-                className={`px-3 py-1 rounded-full text-white text-sm ${
-                  car.availability ? "bg-green-500" : "bg-red-500"
-                }`}
-              >
-                {car.availability ? "Available" : "Booked"}
-              </span>
-            </div>
-            <p className="text-blue-600 font-semibold text-lg">
-              ₹{car.price}/day
-            </p>
-            <p className="text-gray-600 text-sm">
-              {car.seats} • {car.transmission} • {car.fuel}
-            </p>
-
-            <motion.button
-              className={`w-full mt-4 py-2 rounded-md font-semibold transition-all ${
-                car.availability
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
-              }`}
-              disabled={!car.availability}
-              whileHover={{ scale: car.availability ? 1.05 : 1 }}
-              whileTap={{ scale: 0.95 }}
+        {filteredCars.map((car, index) => {
+          console.log("Rendering Car:", car.id, car.name); // Debugging log
+          return (
+            <motion.div
+              key={car.id || `car-${index}`} // Ensure unique keys
+              className="bg-white shadow-xl rounded-lg p-5 hover:shadow-2xl transition-all cursor-pointer"
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              onClick={() => navigate(`/car/${car.id}`)}
             >
-              {car.availability ? "Book Now" : "Unavailable"}
-            </motion.button>
-          </motion.div>
-        ))}
+              {/* ✅ Fixed Image for Proper Fit */}
+              <div className="w-full h-52 overflow-hidden rounded-md">
+                <img
+                  src={car.image || "https://via.placeholder.com/300"} // Default image fallback
+                  alt={car.name}
+                  className="w-full h-full object-cover" // ✅ Ensures complete and proper fit
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/300"; // Handle broken image links
+                  }}
+                />
+              </div>
+
+              <div className="flex justify-between items-center mt-4">
+                <h3 className="text-xl font-bold text-gray-800">{car.name}</h3>
+                <span
+                  className={`px-3 py-1 rounded-full text-white text-sm ${
+                    car.availability ? "bg-green-500" : "bg-red-500"
+                  }`}
+                >
+                  {car.availability ? "Available" : "Booked"}
+                </span>
+              </div>
+              <p className="text-blue-600 font-semibold text-lg">
+                ₹{car.price}/day
+              </p>
+              <p className="text-gray-600 text-sm">
+                {car.seats} • {car.transmission} • {car.fuel}
+              </p>
+
+              <motion.button
+                className={`w-full mt-4 py-2 rounded-md font-semibold transition-all ${
+                  car.availability
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                }`}
+                disabled={!car.availability}
+                whileHover={{ scale: car.availability ? 1.05 : 1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {car.availability ? "Book Now" : "Unavailable"}
+              </motion.button>
+            </motion.div>
+          );
+        })}
       </motion.div>
 
       {/* View All Button */}
