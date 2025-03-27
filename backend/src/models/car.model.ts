@@ -21,4 +21,6 @@ const CarSchema: Schema = new Schema({
   image: String,
 });
 
+
+
 export const Car = mongoose.model<ICar>("Car", CarSchema);

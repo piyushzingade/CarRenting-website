@@ -2,19 +2,21 @@ import { Request, Response } from "express";
 import { Package } from "../models/package.model"; // Import Mongoose model
 
 // Fetch all packages
+
+interface Package {
+  name: string;
+  price: number;
+  destinations: string[];
+  couponCode?: string;
+  image: string;
+  availability: boolean;
+}
+
 export const getAllPackages = async (_req: Request, res: Response) => {
   try {
-    const packages = await Package.find(
-      {},
-      "name price img availability couponCode"
-    );
+    const packages = await Package.find();
 
-    res.status(200).json(
-      packages.map((pack) => ({
-        ...pack.toObject(),
-        id: pack._id, // Map _id to id
-      }))
-    );
+    res.status(200).json(packages);
   } catch (error  : any) {
     console.error("Error fetching packages:", error);
     res.status(500).json({ error: error.message || "Error fetching packages" });
