@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 
-
-
 export default function CarsPages() {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,7 +36,7 @@ export default function CarsPages() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gray-100  p-6">
+    <div className="min-h-screen w-full bg-gray-100 p-6">
       <h1 className="text-4xl font-bold text-gray-900 text-center mb-8">
         Available Cars 🚗
       </h1>
@@ -50,11 +48,11 @@ export default function CarsPages() {
       >
         {cars.map((car) => (
           <motion.div
-            key={car.id}
+            key={car._id} // ✅ Use _id for MongoDB
             className="bg-white shadow-xl p-4 rounded-xl cursor-pointer transform transition duration-300 hover:scale-100"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate(`/car/${car.id}`)}
+            onClick={() => navigate(`/car/${car._id}`)} // ✅ Ensure correct navigation
           >
             <motion.img
               src={car.image}

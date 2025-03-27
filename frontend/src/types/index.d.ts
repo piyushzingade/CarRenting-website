@@ -1,9 +1,9 @@
 interface Package {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   description: string;
-  img: string;
+  image: string;
   couponCode?: string;
   availability: boolean;
   days: string
@@ -14,7 +14,7 @@ interface Package {
 
 // Define Car interface with correct properties
 interface Car {
-  id: string;
+  _id: string;
   name: string;
   type: "economy" | "premium" | "luxury";
   price: number;

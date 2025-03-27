@@ -61,7 +61,7 @@ export default function PackageDetailPage() {
         className="bg-white shadow-2xl p-8 rounded-3xl max-w-3xl mx-auto w-full"
       >
         <motion.img
-          src={pkg.img}
+          src={pkg.image.startsWith("http") ? pkg.image : `/${pkg.image}`} // ✅ Handle image paths properly
           alt={pkg.name}
           className="w-full h-72 object-cover rounded-xl mb-6 shadow-lg"
           initial={{ opacity: 0 }}

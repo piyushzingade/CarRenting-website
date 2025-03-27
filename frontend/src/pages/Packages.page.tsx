@@ -4,16 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 
-// Define the Package interface
-interface Package {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  availability: boolean;
-  couponCode?: string;
-}
+
 
 export default function PackagesPage() {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -61,16 +52,21 @@ export default function PackagesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {packages.map((pack) => (
           <motion.div
-            key={pack.id} // ✅ Fixed unique key warning
+            key={pack._id} // ✅ Fixed unique key warning
             className="bg-white shadow-lg p-5 rounded-xl hover:shadow-2xl transition-shadow duration-300 hover:cursor-pointer"
-            onClick={() => navigate(`/packages/${pack.id}`)}
+            onClick={() => navigate(`/packages/${pack._id}`)}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
             <motion.img
-              src={`/${pack.image}`} // ✅ Fixed image path for public folder
+              src={`/${pack.image}`}
               alt={pack.name}
               className="w-full h-56 object-cover rounded-lg mb-4 shadow-md"
+              style={{
+                objectFit: "cover",
+                aspectRatio: "16/9",
+                maxHeight: "200px",
+              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}

@@ -4,22 +4,35 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { BACKEND_URL } from "../lib/config";
 
-
+// Define Car Interface
+interface Car {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  type: string;
+  availability: boolean;
+}
 
 export default function CarDetailPage() {
-  const { id } = useParams<{ id: string }>(); // Get car ID from the URL
+  const { id } = useParams<{ id: string }>(); // ✅ Ensure id is extracted correctly
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!id) {
+      setError("Invalid car ID."); // ✅ Prevent API call if ID is missing
+      setLoading(false);
+      return;
+    }
+
     const fetchCarDetails = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get token from storage
+        const token = localStorage.getItem("token");
         const response = await axios.get<Car>(`${BACKEND_URL}/cars/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Send token in request
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         setCar(response.data);
       } catch (err) {
@@ -32,22 +45,16 @@ export default function CarDetailPage() {
     fetchCarDetails();
   }, [id]);
 
-  if (loading) {
+  if (loading) return <p className="text-center text-xl mt-10">Loading...</p>;
+  if (error || !car)
     return (
-      <p className="text-center text-xl font-semibold mt-10">Loading...</p>
-    );
-  }
-
-  if (error || !car) {
-    return (
-      <p className="text-center text-red-500 text-xl mt-10">
+      <p className="text-center text-red-500 mt-10">
         {error || "Car not found."}
       </p>
     );
-  }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -55,12 +62,13 @@ export default function CarDetailPage() {
         className="bg-white shadow-xl p-6 rounded-2xl max-w-3xl mx-auto w-full"
       >
         <motion.img
-          src={car.image}
+          src={car.image.startsWith("http") ? car.image : `/${car.image}`} // ✅ Handle image paths properly
           alt={car.name}
           className="w-full h-64 object-cover rounded-xl mb-4 shadow-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7 }}
+          onError={(e) => (e.currentTarget.src = "/placeholder-image.jpg")} // ✅ Fallback image
         />
 
         <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
@@ -81,7 +89,7 @@ export default function CarDetailPage() {
           }`}
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5 }}
         >
           {car.availability ? "Available" : "Unavailable"}
         </motion.p>

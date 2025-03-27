@@ -25,20 +25,27 @@ export const getAllCars = async (_req: Request, res: Response) => {
 // ✅ Fetch a car by ID
 export const getCarDetails = async (req: Request, res: Response) => {
   try {
-    const car = await Car.findById(req.params.id);
+    const { id } = req.params;
+    if (!id) {
+       res.status(400).json({ error: "Car ID is required" });
+       return; 
+    }
 
+    const car = await Car.findById(id);
     if (!car) {
-      res.status(404).json({ error: "Car not found" });
-      return;
+       res.status(404).json({ error: "Car not found" });
+       return;
     }
 
     res.status(200).json(car);
   } catch (error) {
+    console.error("Error fetching car details:", error);
     res
       .status(500)
       .json({ error: "Error fetching car details", details: error });
   }
 };
+
 
 // ✅ Book a car (update availability)
 export const bookCar = async (req: Request, res: Response) => {
