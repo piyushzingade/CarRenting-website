@@ -1,12 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import { BACKEND_URL } from "../lib/config";
 
-// Define Car Interface
 interface Car {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -16,14 +16,15 @@ interface Car {
 }
 
 export default function CarDetailPage() {
-  const { id } = useParams<{ id: string }>(); // ✅ Ensure id is extracted correctly
+  const { id } = useParams<{ id: string }>();
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) {
-      setError("Invalid car ID."); // ✅ Prevent API call if ID is missing
+      setError("Invalid car ID.");
       setLoading(false);
       return;
     }
@@ -45,6 +46,22 @@ export default function CarDetailPage() {
     fetchCarDetails();
   }, [id]);
 
+  const addToCart = async () => {
+    if (!car) return;
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${BACKEND_URL}/user/cart/add`,
+        { itemId: car._id, itemType: "car", price: car.price },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success("Car added to cart!", { position: "top-right" });
+      navigate("/orders"); // Redirect to the Orders page
+    } catch (err) {
+      toast.error("Failed to add car to cart.", { position: "top-right" });
+    }
+  };
+
   if (loading) return <p className="text-center text-xl mt-10">Loading...</p>;
   if (error || !car)
     return (
@@ -62,13 +79,13 @@ export default function CarDetailPage() {
         className="bg-white shadow-xl p-6 rounded-2xl max-w-3xl mx-auto w-full"
       >
         <motion.img
-          src={car.image.startsWith("http") ? car.image : `/${car.image}`} // ✅ Handle image paths properly
+          src={car.image.startsWith("http") ? car.image : `/${car.image}`}
           alt={car.name}
           className="w-full h-64 object-cover rounded-xl mb-4 shadow-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7 }}
-          onError={(e) => (e.currentTarget.src = "/placeholder-image.jpg")} // ✅ Fallback image
+          onError={(e) => (e.currentTarget.src = "/placeholder-image.jpg")}
         />
 
         <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
@@ -98,9 +115,9 @@ export default function CarDetailPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 mt-6 rounded-xl w-full font-semibold tracking-wide shadow-md hover:from-blue-600 hover:to-purple-600 transition-all"
-          onClick={() => alert(`Booking ${car.name} is in progress.`)}
+          onClick={addToCart}
         >
-          Book Now
+          Add to Cart
         </motion.button>
       </motion.div>
     </div>

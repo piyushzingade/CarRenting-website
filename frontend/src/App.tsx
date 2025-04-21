@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import User from "./pages/User";
+import User from "./pages/OrdersPage";
 import Home from "./pages/Home";
 import CarsPages from "./pages/Cars.pages";
 import Layout from "./components/Layout";
@@ -10,6 +10,9 @@ import { ToastContainer } from "react-toastify";
 import { Signup } from "./components/Signup";
 import { Signin } from "./components/Signin";
 import AuthLayout from "./components/AuthLayout";
+import Contact from "./components/Contacts";
+import OrdersPage from "./pages/OrdersPage";
+import BookingPage from "./pages/BookingPage";
 
 function App() {
   return (
@@ -84,6 +87,17 @@ function App() {
             </Layout>
           }
         />
+        <Route path="/contact-us" element={<Contact />} />
+        <Route path="/booking-page" element={<OrdersPage />} />
+        <Route 
+          path="/bookings" 
+          element={
+            <Layout>
+              <BookingPage />
+            </Layout>
+          } 
+        />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>

@@ -1,19 +1,19 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 import { bookCar, getAllCars, getCarDetails } from "../controllers/car.controller";
 import authMiddleware from "../middleware/auth.middleware";
 
-
-
 const carRoutes = express.Router();
 
-// carRoutes.get("/", authMiddleware , getAllCars);
-// carRoutes.get("/:id",authMiddleware ,  getCarDetails);
-// carRoutes.get("/book" , authMiddleware , bookCar)
+// Public routes
+carRoutes.get("/", getAllCars as RequestHandler);
 
+// Protected routes (uncomment to enable authentication)
+// carRoutes.use(authMiddleware);
 
+// Specific routes should come before parameter routes
+carRoutes.get("/book", bookCar as RequestHandler);
 
-carRoutes.get("/",  getAllCars);
-carRoutes.get("/:id",  getCarDetails);
-carRoutes.get("/book", bookCar);
+// Parameter routes
+carRoutes.get("/:id", getCarDetails as RequestHandler);
 
 export default carRoutes;

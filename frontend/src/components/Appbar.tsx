@@ -46,8 +46,18 @@ export default function Navbar() {
         >
           Tour Packages
         </div>
-        <div className="hover:cursor-pointer hover:underline">Offer</div>
-        <div className="hover:cursor-pointer hover:underline">Contact</div>
+        <div
+          onClick={() => navigate("/packages")}
+          className="hover:cursor-pointer hover:underline"
+        >
+          Offer
+        </div>
+        <div
+          onClick={() => navigate("/contact-us")}
+          className="hover:cursor-pointer hover:underline"
+        >
+          Contact
+        </div>
       </div>
 
       {/* Right Section */}
@@ -64,7 +74,10 @@ export default function Navbar() {
 
         {/* Book Now Button (Hidden on Small Screens) */}
         <div className="hidden sm:block pr-3">
-          <button className="bg-white border border-gray-600 hover:bg-blue-600 hover:text-white p-2 rounded-2xl">
+          <button
+            onClick={() => navigate("/cars")}
+            className="bg-white border border-gray-600 hover:bg-blue-600 hover:text-white p-2 rounded-2xl"
+          >
             Book Now
           </button>
         </div>

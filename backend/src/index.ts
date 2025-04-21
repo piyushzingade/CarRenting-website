@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.route";
 import carRoutes from "./routes/car.route";
 import packageRoutes from "./routes/packages.route";
 import contactRoutes from "./routes/contact.route";
+import bookingRoutes from "./routes/booking.routes";
 import connectDB from "./db/db";
 
 
@@ -23,6 +24,7 @@ app.use("/user", userRoutes);
 app.use("/cars", carRoutes);
 app.use("/packages", packageRoutes);
 app.use("/contact", contactRoutes);
+app.use("/bookings", bookingRoutes);
 
 
 

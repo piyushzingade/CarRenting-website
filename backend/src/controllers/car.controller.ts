@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Car } from "../models/car.model";
+import mongoose from "mongoose";
 
 // Define the car type based on schema
 interface Car {
@@ -18,6 +19,7 @@ export const getAllCars = async (_req: Request, res: Response) => {
     const cars = await Car.find(); // Fetch all cars
     res.status(200).json(cars);
   } catch (error) {
+    console.error("Error fetching cars:", error);
     res.status(500).json({ error: "Error fetching cars", details: error });
   }
 };
@@ -26,42 +28,42 @@ export const getAllCars = async (_req: Request, res: Response) => {
 export const getCarDetails = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    if (!id) {
-       res.status(400).json({ error: "Car ID is required" });
-       return; 
+    
+    // Check if id is valid
+    if (!id || id === "undefined" || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid car ID" });
     }
 
     const car = await Car.findById(id);
     if (!car) {
-       res.status(404).json({ error: "Car not found" });
-       return;
+      return res.status(404).json({ error: "Car not found" });
     }
 
     res.status(200).json(car);
   } catch (error) {
     console.error("Error fetching car details:", error);
-    res
-      .status(500)
-      .json({ error: "Error fetching car details", details: error });
+    res.status(500).json({ error: "Error fetching car details", details: error });
   }
 };
-
 
 // ✅ Book a car (update availability)
 export const bookCar = async (req: Request, res: Response) => {
   const { carId } = req.body;
 
   try {
+    // Check if carId is valid
+    if (!carId || carId === "undefined" || !mongoose.Types.ObjectId.isValid(carId)) {
+      return res.status(400).json({ error: "Invalid car ID" });
+    }
+
     const car = await Car.findById(carId);
 
     if (!car) {
-      res.status(404).json({ error: "Car not found" });
-      return;
+      return res.status(404).json({ error: "Car not found" });
     }
 
     if (!car.availability) {
-      res.status(400).json({ error: "Car is already booked" });
-      return;
+      return res.status(400).json({ error: "Car is already booked" });
     }
 
     // Mark car as booked (unavailable)
@@ -73,6 +75,7 @@ export const bookCar = async (req: Request, res: Response) => {
       car,
     });
   } catch (error) {
+    console.error("Error booking car:", error);
     res.status(500).json({ error: "Error booking car", details: error });
   }
 };

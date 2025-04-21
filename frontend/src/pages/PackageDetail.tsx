@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -12,6 +12,8 @@ export default function PackageDetailPage() {
   const [pkg, setPkg] = useState<Package | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchPackageDetails = async () => {
@@ -108,7 +110,7 @@ export default function PackageDetailPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="mt-6 w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold tracking-wide shadow-lg hover:from-blue-600 hover:to-purple-600 transition-all"
-            onClick={() => alert(`Booking ${pkg.name} is in progress.`)}
+            onClick={() => navigate("/booking-page")}
           >
             Book Now 🚀
           </motion.button>
